@@ -143,7 +143,7 @@ function AdminDashboard() {
     try {
       await signOut(auth);
       toast.success("Logged out successfully!", { position: "top-right", autoClose: 2000 });
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (error) {
       console.error("Error logging out:", error);
       toast.error("Failed to log out. Please try again.", { position: "top-right", autoClose: 2000 });
