@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react"; // Added useState
 import { CartContext } from "./CartContext";
 import "./Cart.css";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./Navbar";
-
-// 🆕 Firebase Firestore import
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { getAuth } from "firebase/auth";
@@ -16,10 +14,12 @@ function Cart() {
     cartItems,
     removeFromCart,
     decreaseQuantity,
-    increaseQuantity
+    increaseQuantity,
+    clearCart, // Import clearCart from CartContext
   } = useContext(CartContext);
 
   const navigate = useNavigate();
+  const [specialInstructions, setSpecialInstructions] = useState(""); // State for special instructions
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + (item.price ? item.price * item.quantity : 0),
@@ -43,56 +43,72 @@ function Cart() {
     toast.error(`${name} removed from cart`, { autoClose: 1000 });
   };
 
-  // Inside the Cart component:
-const handleCheckout = async () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const handleCheckout = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-  if (!user || !user.email) {
-    toast.error("You must be signed in to place an order.");
-    return;
-  }
+    if (!user || !user.email) {
+      toast.error("You must be signed in to place an order.");
+      return;
+    }
 
-  if (cartItems.length === 0) {
-    toast.warning("Your cart is empty!");
-    return;
-  }
+    if (cartItems.length === 0) {
+      toast.warning("Your cart is empty!");
+      return;
+    }
 
-  const confirm = window.confirm("Are you sure you want to place the order?");
-  if (!confirm) return;
+    const confirm = window.confirm("Are you sure you want to place the order?");
+    if (!confirm) return;
 
-  const orderData = {
-    customerName: user.displayName || "Customer",
-    email: user.email,
-    items: cartItems.map(item => ({
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity
-    })),
-    total: totalPrice,
-    status: "pending",
-    createdAt: serverTimestamp()
+    const orderData = {
+      customerName: user.displayName || "Customer",
+      email: user.email,
+      items: cartItems.map((item) => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+      total: totalPrice,
+      specialInstructions: specialInstructions || "None", // Include special instructions
+      status: "pending",
+      createdAt: serverTimestamp(),
+    };
+
+    console.log("Order Data:", orderData); // Debugging: Check if specialInstructions is included
+
+    try {
+      const docRef = await addDoc(collection(db, "orders"), orderData);
+      console.log("Order ID:", docRef.id);
+      toast.success(`Order submitted! Receipt will be sent to ${user.email}`);
+
+      // Clear the cart
+      clearCart();
+
+      // Redirect to the Order Tracking page
+      navigate(`/order-tracking/${docRef.id}`);
+    } catch (error) {
+      console.error("Order submission error:", error.message);
+      toast.error("Failed to place order.");
+    }
   };
-
-  try {
-    const docRef = await addDoc(collection(db, "orders"), orderData);
-    console.log("Order ID:", docRef.id);
-    toast.success(`Order submitted! Receipt will be sent to ${user.email}`);
-  } catch (error) {
-    console.error("Order submission error:", error);
-    toast.error("Failed to place order.");
-  }
-};
 
   return (
     <div className="cart-container">
       <Navbar />
       <ToastContainer />
       <div className="cart-header">
-        <h1>Your Cart</h1>
       </div>
       {cartItems.length === 0 ? (
-        <p className="empty-cart-message">Empty cart! GO BUY SOMETHING 😡</p>
+        <div className="empty-cart-container">
+          <h2 className="empty-cart-title">Your Cart is Empty</h2>
+          <p className="empty-cart-message">
+            Oops! It looks like you haven’t added anything to your cart yet.
+            Explore our menu and find something delicious!
+          </p>
+          <button className="empty-cart-btn" onClick={() => navigate("/menu")}>
+            Explore Menu
+          </button>
+        </div>
       ) : (
         <div className="cart-content">
           <div className="cart-table">
@@ -106,7 +122,11 @@ const handleCheckout = async () => {
             {cartItems.map((item, index) => (
               <div key={index} className="cart-table-row">
                 <div className="cart-item-info">
-                  <img src={item.image} alt={item.name} className="cart-image" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="cart-image"
+                  />
                   <div>
                     <span className="cart-item-name">{item.name}</span>
                     <span className="cart-item-category">{item.category}</span>
@@ -142,13 +162,17 @@ const handleCheckout = async () => {
           <div className="cart-footer">
             <div className="special-instructions">
               <label htmlFor="instructions">Special Instructions</label>
-              <textarea id="instructions" placeholder="Add any special instructions here..." />
+              <textarea
+                id="instructions"
+                placeholder="Add any special instructions here..."
+                value={specialInstructions} // Bind to state
+                onChange={(e) => setSpecialInstructions(e.target.value)} // Update state on change
+              />
             </div>
             <div className="cart-summary">
               <div className="cart-total">
                 <strong>${totalPrice.toFixed(2)}</strong>
               </div>
-              {/* 🆕 Checkout button connected */}
               <button className="checkout-btn" onClick={handleCheckout}>
                 Checkout
               </button>

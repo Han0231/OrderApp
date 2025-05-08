@@ -1,36 +1,19 @@
 /* Navbar Container */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #8b2424;
-    padding: 10px 20px;
-    height: 80px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #0a6e0a, #003a00, #0a6e0a); /* Gradient green background */
+  padding: 10px 20px;
+  height: 80px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
 
-  }
-  .frame-2 {
-    background: #8b2424;
-    border-style: solid;
-    border-color: #ffffff;
-    border-width: 1px;
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 59px;
-    top: 40px;
-  }
-  
-  
 /* Logo */
 .navbar-logo {
   font-family: "InriaSans-Bold", sans-serif;
@@ -40,7 +23,7 @@
   text-align: center;
   line-height: 120%;
   letter-spacing: -0.03em;
-  background: #8b2424;
+  background: #006400; /* Solid green background for the logo */
   border: 1px solid #ffffff;
   padding: 15px;
   border-radius: 5px;
@@ -48,7 +31,7 @@
   cursor: pointer; /* Make it look clickable */
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
-  
+
 /* Hover Effect */
 .navbar-logo:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add a shadow effect */
@@ -61,86 +44,105 @@
   gap: 2rem;
 }
 
-  
-  .navbar-buttons .home,
-  .navbar-buttons .menu,
-  .navbar-buttons .contact-locations,
-  .navbar-buttons .about-us {
-    color: #ffffff;
-    background-color: #8b2424;
-    border: none;
-    text-align: center;
-    font-family: "MtExtra-Regular", sans-serif;
-    font-size: 1rem;
-    line-height: 120%;
-    letter-spacing: -0.03em;
-    font-weight: 400;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-   
-  }
-  
-  .navbar-buttons .home:hover,
-  .navbar-buttons .menu:hover,
-  .navbar-buttons .contact-locations:hover,
-  .navbar-buttons .about-us:hover {
-    background-color: #a32d2d;
-    transform: scale(1.05);
-  }
-  
-  /* Login and Cart Buttons */
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .navbar-right .login-button {
-    background: #8b2424;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .navbar-right .login-button:hover {
-    background: #a32d2d;
-  }
-  
-  .navbar-right .shopping-cart-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .navbar-right .shopping-cart-button img {
-    width: 40px;
-    height: 40px;
-  }
+.navbar-buttons .home,
+.navbar-buttons .menu,
+.navbar-buttons .contact-locations,
+.navbar-buttons .about-us {
+  color: #ffffff;
+  background-color: transparent; /* Transparent background to follow navbar gradient */
+  border: none; /* Remove button outline */
+  text-align: center;
+  font-family: "MtExtra-Regular", sans-serif;
+  font-size: 1rem;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-  .profile-button {
-    width: 47px; /* Adjust the size of the profile icon */
-    height: 47px;
-    border-radius: 50%; /* Make it circular */
-    border: 0px solid #ccc; /* Optional: Add a border */
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add hover effects */
-  }
-  
-  .shopping-cart-button:focus {
-    outline: none;
-  }
-  
-  .profile-button:active {
-    transform: scale(0.95); /* Slightly shrink on click */
-  }
+.navbar-buttons .home:hover,
+.navbar-buttons .menu:hover,
+.navbar-buttons .contact-locations:hover,
+.navbar-buttons .about-us:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Slight white overlay on hover */
+  transform: scale(1.05);
+}
 
-  /* Responsive Design */
+/* Login and Cart Buttons */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Login Button */
+.navbar-right .login-button {
+  background: none; /* Transparent background */
+  border: none; /* Remove border */
+  cursor: pointer;
+  color: #ffffff; /* White text color */
+  font-family: "MtExtra-Regular", sans-serif;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+/* Hover Effect for Login Button */
+.navbar-right .login-button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Slight white overlay on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Profile Button */
+.navbar-right .profile-button {
+  background: none; /* Transparent background */
+  border: none;
+  cursor: pointer;
+  width: 50px; /* Match the shopping cart size */
+  height: 50px; /* Match the shopping cart size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* Make it circular if needed */
+  overflow: hidden; /* Prevent oversized content */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar-right .profile-button img {
+  width: 40px;
+  height: 40px;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Ensures proper scaling */
+}
+
+.navbar-right .profile-button:hover {
+  background: rgba(255, 255, 255, 0.2); /* Slight white overlay on hover */
+  transform: scale(1.05);
+}
+
+/* Shopping Cart Button */
+.navbar-right .shopping-cart-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar-right .shopping-cart-button img {
+  width: 40px;
+  height: 40px;
+}
+
+/* Ensure content starts below the navbar */
+body {
+  margin-top: 80px; /* Match the height of the navbar */
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -169,9 +171,14 @@
     margin-top: 10px;
   }
 
-  .navbar-right .login-button {
-    font-size: 0.9rem;
-    padding: 8px 12px;
+  .navbar-right .profile-button {
+    width: 35px; /* Adjust for smaller screens */
+    height: 35px; /* Adjust for smaller screens */
+  }
+
+  .navbar-right .profile-button img {
+    width: 35px; /* Adjust for smaller screens */
+    height: 35px; /* Adjust for smaller screens */
   }
 
   .navbar-right .shopping-cart-button img {
@@ -193,18 +200,18 @@
     padding: 6px 10px;
   }
 
-  .navbar-right .login-button {
-    font-size: 0.8rem;
-    padding: 6px 10px;
+  .navbar-right .profile-button {
+    width: 30px; /* Adjust for smaller screens */
+    height: 30px; /* Adjust for smaller screens */
+  }
+
+  .navbar-right .profile-button img {
+    width: 30px; /* Adjust for smaller screens */
+    height: 30px; /* Adjust for smaller screens */
   }
 
   .navbar-right .shopping-cart-button img {
     width: 30px;
     height: 30px;
-  }
-
-  .profile-button {
-    width: 40px;
-    height: 40px;
   }
 }

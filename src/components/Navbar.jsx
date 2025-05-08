@@ -21,7 +21,7 @@ function Navbar() {
     <div className="navbar">
       {/* Logo */}
       <Link to="/" className="navbar-logo">
-        FUJI ITCHYBUN
+        KADU KITCHEN
       </Link>
 
       {/* Navigation Buttons */}

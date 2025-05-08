@@ -9,6 +9,7 @@ import SignUp from './components/Signup';
 import Contact from './components/Contact'; // Import the Contact component
 import About from './components/aboutUs'; // Import the About component
 import AdminDashboard from './components/AdminDashboard';
+import OrderTracking from './components/OrderTracking';
 import './App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/contact" element={<Contact />} /> {/* Add the Contact route */}
           <Route path="/about" element={<About />} /> {/* Add the About route */}
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/order-tracking/:orderId" element={<OrderTracking />} />
         </Routes>
       </Router>
     </CartProvider>

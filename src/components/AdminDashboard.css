@@ -4,13 +4,13 @@
   font-family: 'Poppins', sans-serif;
   max-width: 1400px;
   margin: 0 auto;
-  background-color: #f8f9fc;
+  background-color: #f8f9fc; /* Light gray background */
 }
 
 .admin-dashboard h1 {
   text-align: center;
   margin-bottom: 20px;
-  color: #4a4a6a;
+  color: #050505; /* Primary blue color */
   font-size: 2.5rem;
   font-weight: 700;
 }
@@ -25,19 +25,25 @@
 
 .top-menu button {
   padding: 12px 20px;
-  background-color: #4a3aff;
+  background-color: #4a3aff; /* Primary blue */
   color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .top-menu button:hover {
-  background-color: #372fbd;
+  background-color: #372fbd; /* Darker blue on hover */
   transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.top-menu button:active {
+  transform: scale(0.95); /* Slight shrink on click */
 }
 
 .top-menu .active-tab {
@@ -47,7 +53,7 @@
 
 /* Content Section */
 .content {
-  background-color: #ffffff;
+  background-color: #ffffff; /* White background */
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -66,26 +72,69 @@
   flex: 1;
   max-width: 300px;
   padding: 10px;
+  background-color: white;
+  color:#050505;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-section-form input:focus {
+  border-color: #4a3aff; /* Primary blue on focus */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  outline: none;
 }
 
 .add-section-form button {
   padding: 10px 20px;
-  background-color: #4a3aff;
+  background-color: #4a3aff; /* Primary blue */
   color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .add-section-form button:hover {
-  background-color: #372fbd;
+  background-color: #372fbd; /* Darker blue on hover */
   transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.add-section-form button:active {
+  transform: scale(0.95); /* Slight shrink on click */
+}
+
+/* Dropdown for Section Selection */
+.section-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.section-dropdown select {
+  flex: 1;
+  max-width: 300px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: #4a4a4a; /* Dark gray */
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-dropdown select:focus {
+  border-color: #f6f6f7; /* Primary blue on focus */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  outline: none;
 }
 
 /* Menu Categories */
@@ -96,7 +145,7 @@
 .menu-category .category-title {
   font-weight: 600;
   font-size: 1.5rem;
-  color: #4a4a6a;
+  color: #4a4a4a; /* Dark gray */
   margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
@@ -105,17 +154,24 @@
 
 .menu-category .remove-section-button {
   padding: 8px 16px;
-  background-color: #ff6b6b;
-  color: #ffffff;
+  background-color: #bd190e !important; /* Force the primary blue color */
+  color: #ffffff !important; /* Force white text */
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .menu-category .remove-section-button:hover {
-  background-color: #e63946;
+  background-color: #372fbd !important; /* Darker blue on hover */
+  transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.menu-category .remove-section-button:active {
+  transform: scale(0.95); /* Slight shrink on click */
 }
 
 /* Menu Items Grid */
@@ -126,7 +182,7 @@
 }
 
 .menu-item-card {
-  background-color: #ffffff;
+  background-color: #ffffff; /* White background */
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   padding: 15px;
@@ -150,56 +206,81 @@
 .menu-item-name {
   font-size: 1rem;
   font-weight: 600;
-  color: #4a4a6a;
+  color: #4a4a4a; /* Dark gray */
   margin-bottom: 10px;
 }
 
 .remove-button {
-  padding: 8px 16px;
-  background-color: #ff6b6b;
+  padding: 10px 20px;
+  background-color: #cc1414; /* Primary blue */
   color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .remove-button:hover {
-  background-color: #e63946;
+  background-color: #e24a4a; /* Darker blue on hover */
+  transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.remove-button:active {
+  transform: scale(0.95); /* Slight shrink on click */
 }
 
 /* Add Menu Item Form */
 .add-menu-item-form {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .add-menu-item-form input {
   flex: 1;
-  padding: 8px;
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+  color:#050505;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-menu-item-form input:focus {
+  border-color: #4a3aff; /* Primary blue on focus */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  outline: none;
 }
 
 .add-menu-item-form button {
-  padding: 8px 16px;
-  background-color: #4a3aff;
+  padding: 10px 20px;
+  background-color: #4a3aff; /* Primary blue */
   color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .add-menu-item-form button:hover {
-  background-color: #372fbd;
+  background-color: #372fbd; /* Darker blue on hover */
   transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.add-menu-item-form button:active {
+  transform: scale(0.95); /* Slight shrink on click */
 }
 
 /* Users Table */
@@ -221,7 +302,7 @@
 .users-table th {
   background-color: #f1f1f8;
   font-weight: 600;
-  color: #4a4a6a;
+  color: #4a4a4a; /* Dark gray */
 }
 
 .users-table tr:nth-child(even) {
@@ -234,17 +315,24 @@
 
 .reset-button {
   padding: 8px 16px;
-  background-color: #4a3aff;
+  background-color: #4a3aff; /* Primary blue */
   color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .reset-button:hover {
-  background-color: #372fbd;
+  background-color: #372fbd; /* Darker blue on hover */
+  transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.reset-button:active {
+  transform: scale(0.95); /* Slight shrink on click */
 }
 
 /* Logout Button */
@@ -252,27 +340,101 @@
   display: block;
   margin: 30px auto;
   padding: 12px 24px;
-  background-color: #ff6b6b;
+  background-color: #4a3aff; /* Primary blue */
   color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .logout-button:hover {
-  background-color: #e63946;
+  background-color: #372fbd; /* Darker blue on hover */
   transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
 }
 
 .logout-button:active {
-  transform: scale(0.95);
+  transform: scale(0.95); /* Slight shrink on click */
 }
 
-h1, h2, h3 {
-  color: black;
+/* Orders Table */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  text-align: left;
+  color: black; /* Make text black */
+}
+
+.orders-table th {
+  background-color: #f1f1f8;
+  font-weight: 600;
+}
+
+.orders-table tr:nth-child(even) {
+  background-color: #fafaff;
+}
+
+.orders-table tr:hover {
+  background-color: #f0f2ff;
+}
+
+.complete-button,
+.cancel-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.complete-button {
+  background-color: #28a745; /* Green for Complete */
+  color: white;
+}
+
+.complete-button:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.complete-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  background-color: #dc3545; /* Red for Cancel */
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.cancel-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+h3 {
+  color:black;
 }
 
 /* Responsive Design */

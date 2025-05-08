@@ -1,4 +1,4 @@
-import {  signOut, sendEmailVerification, sendPasswordResetEmail, signInWithPopup } from 'firebase/auth';
+import {  sendPasswordResetEmail, signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../firebaseConfig';
 import { toast } from 'react-toastify';
 
@@ -42,20 +42,3 @@ export const handleForgotPassword = async (resetEmail, setShowForgotPassword) =>
   }
 };
 
-export const handleResendVerification = async (user) => {
-  try {
-    if (user) {
-      await sendEmailVerification(user);
-      toast.success('Verification email sent! Check your inbox.', {
-        position: "top-right",
-        autoClose: 2000,
-      });
-    }
-  } catch (error) {
-    console.error('Error sending verification email:', error);
-    toast.error('Failed to send verification email. Please try again.', {
-      position: "top-right",
-      autoClose: 2000,
-    });
-  }
-};

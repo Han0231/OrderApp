@@ -13,48 +13,98 @@
   padding: 2rem;
 }
 
+.order-history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.order-card {
+  border: 1px solid #555; /* Medium gray border */
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f9f9f9; /* Light gray background */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333; /* Dark gray text */
+}
+
+.order-card h4 {
+  margin-bottom: 0.5rem;
+  color: #444; /* Slightly lighter gray */
+}
+
+.order-card p {
+  margin: 0.25rem 0;
+  color: #333;
+  text-align: left;
+}
+
+.order-card ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.5rem;
+  text-align: left;
+}
+
+.order-card ul li {
+  color: #444;
+}
+
+.order-section-header {
+  width: 100%;
+  text-align: left;
+  background-color: #eaeaea; /* Very light gray */
+  border: 1px solid #555; /* Medium gray border */
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333; /* Dark gray text */
+}
+
+.order-section-header:hover {
+  background-color: #dcdcdc; /* Slightly darker light gray */
+}
+
+.order-section-content {
+  padding: 0.5rem 1rem;
+  background-color: #f9f9f9; /* Light gray background */
+  border-left: 1px solid #555;
+  border-right: 1px solid #555;
+  border-bottom: 1px solid #555;
+  border-radius: 0 0 4px 4px;
+}
+
+.order-section-content p {
+  margin: 0.5rem 0;
+}
+
+.order-section-content ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.5rem;
+}
+
+.order-section-content ul li {
+  margin-bottom: 0.25rem;
+}
+
+/* Profile Container */
 .profile {
   display: flex;
   flex-direction: row;
   width: 170%;
   max-width: 1000px;
   height: 450px;
-  background-color: #ffffff;
+  background-color: #f9f9f9; /* Light gray background */
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   animation: fadeIn 0.5s ease-in-out;
 }
-.forgot-password button {
-  background: none;
-  border: none;
-  color: #8b2424;
-  font-family: "Outfit-SemiBold", sans-serif;
-  font-size: 0.9rem;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.forgot-password button:hover {
-  color: #a32d2d;
-  transform: scale(1.05);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
 .profile .side-tabs {
   width: 50%;
-  background-color: #8b2424;
+  background-color: #333; /* Dark gray */
   color: white;
   display: flex;
   flex-direction: column;
@@ -78,36 +128,36 @@
 }
 
 .profile .side-tabs button.active {
-  background-color: #a32d2d;
+  background-color: #555; /* Medium gray */
   transform: scale(1.05);
 }
 
 .profile .side-tabs button:hover {
-  background-color: #a32d2d;
+  background-color: #555;
   transform: scale(1.05);
 }
 
 .profile .side-tabs button.logout {
   margin-top: auto;
-  background-color: #d32f2f;
+  background-color: #1f5c26; /* Firebrick red */
   text-align: center;
 }
 
 .profile .side-tabs button.logout:hover {
-  background-color: #b71c1c;
+  background-color: #197738; /* Slightly lighter red */
 }
 
 .profile .tab-content {
   width: 100%;
   padding: 2rem;
   font-family: "Outfit-Regular", sans-serif;
-  color: #333;
+  color: #333; /* Dark gray text */
   overflow-y: auto;
 }
 
 .profile .tab-content h3 {
   font-family: "Outfit-SemiBold", sans-serif;
-  color: #8b2424;
+  color: #333; /* Dark gray */
   margin-bottom: 1rem;
   font-size: 1.8rem;
 }
@@ -136,7 +186,7 @@
 .login-container {
   width: 90%;
   max-width: 500px;
-  background-color: #ffffff;
+  background-color: #f9f9f9; /* Light gray background */
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -148,7 +198,7 @@
   text-align: center;
   font-family: "Outfit-SemiBold", sans-serif;
   font-size: 2rem;
-  color: #333;
+  color: #333; /* Dark gray */
   margin-bottom: 1.5rem;
 }
 
@@ -160,26 +210,13 @@
   position: relative;
 }
 
-.icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-right: 0.5rem;
-}
-
-.label {
-  font-family: "Outfit-Regular", sans-serif;
-  font-size: 1rem;
-  color: #555;
-  margin-right: 0.5rem;
-}
-
 .input-field {
   width: 100%;
   padding: 0.75rem;
   font-family: "Outfit-Regular", sans-serif;
   font-size: 1rem;
-  color: #333;
-  border: 1px solid #ddd;
+  color: #333; /* Dark gray text */
+  border: 1px solid #555; /* Medium gray border */
   border-radius: 8px;
   background-color: #ffffff;
   outline: none;
@@ -187,14 +224,14 @@
 }
 
 .input-field:focus {
-  border-color: #8b2424;
-  box-shadow: 0 0 5px rgba(139, 36, 36, 0.5);
+  border-color: #000; /* Black border */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 /* Buttons */
 .button2 {
   width: 100%;
-  background: #8b2424;
+  background: #0ac1d5; /* Dark gray */
   border: none;
   border-radius: 8px;
   padding: 0.75rem;
@@ -206,13 +243,13 @@
 }
 
 .button2:hover {
-  background: #a32d2d;
+  background: #050505; /* Black */
   transform: scale(1.05);
 }
 
 /* Error and Success Messages */
 .error-message {
-  color: #d32f2f;
+  color: #b22222; /* Firebrick red */
   font-size: 0.9rem;
   margin-top: 0.5rem;
   text-align: center;
@@ -222,8 +259,90 @@
 .footer {
   text-align: center;
   font-size: 0.8rem;
-  color: #777;
+  color: #555; /* Medium gray */
   margin-top: 1rem;
+}
+
+/* Account Information Section */
+.account-info {
+  padding: 1.5rem;
+  background-color: #f9f9f9; /* Light gray background */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.account-info h3 {
+  font-family: "Outfit-SemiBold", sans-serif;
+  color: #333; /* Dark gray */
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.account-info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.info-card {
+  background-color: #ffffff; /* White background */
+  border: 1px solid #555; /* Medium gray border */
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-card h4 {
+  font-family: "Outfit-SemiBold", sans-serif;
+  color: #333; /* Dark gray */
+  margin-bottom: 0.5rem;
+}
+
+.info-card p {
+  font-family: "Outfit-Regular", sans-serif;
+  color: #555; /* Medium gray text */
+  font-size: 1rem;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.order-card {
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-card p {
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.track-order-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.track-order-btn:hover {
+  background-color: #000;
+}
+
+.track-order-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Responsive Design */
@@ -284,4 +403,26 @@
   .footer {
     font-size: 0.7rem;
   }
+}
+
+.forgot-password button {
+  background: none;
+  border: none;
+  color: #8b2424;
+  font-family: "Outfit-SemiBold", sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.link-button{
+   background: none;
+  border: none;
+  color: #8b2424;
+  font-family: "Outfit-SemiBold", sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease, transform 0.2s ease;
 }

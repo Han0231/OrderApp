@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebaseConfig';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig'; // Ensure Firestore is configured
 import userIcon from "./imageFiles/userIcon.svg";
 import lockIcon from "./imageFiles/lock.svg";
-import facebook from "./imageFiles/facebook.png";
 import google from "./imageFiles/google.png";
-import './Signup.css'; // Import the new Signup.css
+import './Signup.css';
 import Navbar from './Navbar';
-import { handleGoogleLogin } from './AuthHelper/authFunctions'; // Import the Google login function
+import {handleGoogleLogin} from './AuthHelper/authFunctions'; // Import Google login function
 
 function SignUp() {
   const navigate = useNavigate();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Add this line to track loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -25,13 +28,23 @@ function SignUp() {
       setErrorMsg('Passwords do not match.');
       return;
     }
-    setIsLoading(true); // Show loading indicator
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // Create user with Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Save additional user data to Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+      });
+
       setErrorMsg('');
       setSuccessMsg('Account created successfully!');
       setTimeout(() => {
-        navigate('/login'); // Redirect to login page after successful signup
+        navigate('/'); // Redirect to login page after successful signup
       }, 2000);
     } catch (error) {
       switch (error.code) {
@@ -47,8 +60,6 @@ function SignUp() {
         default:
           setErrorMsg(error.message);
       }
-    } finally {
-      setIsLoading(false); // Hide loading indicator after process completes
     }
   };
 
@@ -59,6 +70,42 @@ function SignUp() {
         <div className="signup-container">
           <h2 className="signup-title">Sign Up</h2>
           <form onSubmit={handleSignUp} className="signup-form">
+            <div className="input-group">
+              <label htmlFor="firstName" className="label">First Name:</label>
+              <input
+                type="text"
+                id="firstName"
+                className="input-field"
+                placeholder="Enter your first name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="lastName" className="label">Last Name:</label>
+              <input
+                type="text"
+                id="lastName"
+                className="input-field"
+                placeholder="Enter your last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="phoneNumber" className="label">Phone Number:</label>
+              <input
+                type="tel"
+                id="phoneNumber"
+                className="input-field"
+                placeholder="Enter your phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </div>
             <div className="input-group">
               <img src={userIcon} alt="User Icon" className="icon" />
               <label htmlFor="email" className="label">Email:</label>
@@ -98,9 +145,7 @@ function SignUp() {
                 required
               />
             </div>
-            <button type="submit" className="button2" disabled={isLoading}>
-              {isLoading ? 'Signing Up...' : 'Sign Up'}
-            </button>
+            <button type="submit" className="button2">Sign Up</button>
           </form>
           {errorMsg && <p className="error-message">{errorMsg}</p>}
           {successMsg && <p className="success-message">{successMsg}</p>}
@@ -110,13 +155,13 @@ function SignUp() {
           <div className="social-login">
             <p>Or Sign Up Using</p>
             <div className="social-icons">
-              <img 
+            <img 
                 src={google} 
                 alt="Google Icon" 
                 onClick={() => handleGoogleLogin(navigate, setErrorMsg, setIsLoading)} 
                 style={{ cursor: 'pointer' }}
               />
-              <img src={facebook} alt="Facebook Icon" />
+           
             </div>
             <footer className="footer">
               <p>© 2023 Fuji Ichybun Restaurant</p>

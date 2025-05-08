@@ -20,7 +20,7 @@
 /* Universal Background */
 .universal-background {
   position: relative;
-  background: url('./components/imageFiles/background4.jpeg') center center fixed;
+  background: url('./components/imageFiles/background5.webp') center center fixed;
   background-size: cover;
   min-height: 100vh;
   color: #ffffff; /* Default text color for better contrast */
@@ -32,7 +32,7 @@
 
 .universal-background {
   position: relative;
-  background: url('./components/imageFiles/background1.png') center center;
+  background: url('./components/imageFiles/background5.webp') center center;
   background-size: 300px 300px; /* Set the size of the background image */
   background-repeat: repeat; /* Make the background repeat */
   min-height: 100vh;
@@ -47,7 +47,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: url('./components/imageFiles/background1.png') repeat center center;
+  background: url('./components/imageFiles/background5.webp') repeat center center;
   background-size: 300px 300px; /* Set the size of the background image */
   color: #ffffff;
 }

@@ -1,10 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
 import { getFirestore, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { toast } from 'react-toastify'; // Import react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
+import { toast } from "react-toastify"; // Import react-toastify
+import "react-toastify/dist/ReactToastify.css"; // Import toastify CSS
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-
 
 // Create a context so other components can access cart data
 export const CartContext = createContext();
@@ -83,38 +82,6 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
-    if (!user.emailVerified) {
-      toast.info(
-        <div>
-          Please verify your email to add items.
-          <br />
-          <Link to="/login">
-            <button
-              style={{
-                marginTop: "6px",
-                padding: "5px 10px",
-                background: "#8c0909",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-                color: "white",
-              }}
-            >
-              Go to Login
-            </button>
-          </Link>
-        </div>,
-        {
-          position: "top-center",
-          autoClose: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-        }
-      );
-      return;
-    }
-
     toast.success(`${item.name} added to cart!`, {
       position: "top-right",
       autoClose: 800,
@@ -187,6 +154,17 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  /**
+   * Clear the cart completely
+   */
+  const clearCart = () => {
+    setCartItems([]); // Reset local cart state
+    if (user) {
+      const cartRef = doc(db, "carts", user.uid);
+      setDoc(cartRef, { items: [] }, { merge: true }); // Clear cart in Firestore
+    }
+  };
+
   // Provide cart data and functions to any component using this context
   return (
     <CartContext.Provider
@@ -196,6 +174,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         decreaseQuantity,
         increaseQuantity,
+        clearCart, // Provide clearCart function
       }}
     >
       {children}
