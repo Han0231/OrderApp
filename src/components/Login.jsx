@@ -11,6 +11,8 @@ import Navbar from './Navbar';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { handleGoogleLogin , handleForgotPassword, handleResendVerification} from './AuthHelper/authFunctions'; // Import the Google login function
+
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -65,75 +67,28 @@ function Login() {
           setErrorMsg('Invalid email format.');
           break;
         default:
-          setErrorMsg(error.message);
+          setErrorMsg("error.message");
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      setIsLoading(true);
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      setErrorMsg('');
-      navigate('/menu');
-    } catch (error) {
-      console.error('Google login error:', error);
-      setErrorMsg('Google sign-in failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+    // Trigger the forgot password function from authFunctions.js
+    await handleForgotPassword(resetEmail, setShowForgotPassword);
   };
 
-  const handleForgotPassword = async () => {
-    if (!resetEmail) {
-      toast.error('Please enter your email to reset your password.', {
-        position: "top-right",
-        autoClose: 2000,
-      });
-      return;
-    }
-
-    try {
-      await sendPasswordResetEmail(auth, resetEmail);
-      toast.success('Password reset email sent! Check your inbox.', {
-        position: "top-right",
-        autoClose: 2000,
-      });
-      setShowForgotPassword(false);
-      setResetEmail('');
-    } catch (error) {
-      console.error('Error sending password reset email:', error);
-      toast.error('Failed to send password reset email. Please try again.', {
-        position: "top-right",
-        autoClose: 2000,
-      });
-    }
-  };
-
-  const handleResendVerification = async () => {
-    try {
-      if (user) {
-        await sendEmailVerification(user);
-        toast.success('Verification email sent! Check your inbox.', {
-          position: "top-right",
-          autoClose: 2000,
-        });
-      }
-    } catch (error) {
-      console.error('Error sending verification email:', error);
-      toast.error('Failed to send verification email. Please try again.', {
-        position: "top-right",
-        autoClose: 2000,
-      });
-    }
+  const handleResendClick = () => {
+    handleResendVerification(user);
   };
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      setErrorMsg && setErrorMsg(''); // Clear any lingering errors
       navigate('/login');
     } catch (error) {
       console.error('Error logging out:', error);
@@ -178,7 +133,7 @@ function Login() {
                 <>
                   <p>Your email is not verified. Please verify your email to access all features.</p>
                   <button
-                    onClick={handleResendVerification}
+                    onClick={handleResendClick}
                     className="button2"
                     disabled={isLoading}
                   >
@@ -290,7 +245,7 @@ function Login() {
                   onChange={(e) => setResetEmail(e.target.value)}
                   className="input-field"
                 />
-                <button onClick={handleForgotPassword} className="button2">
+                <button onClick={handleForgotPasswordSubmit} className="button2">
                   Send Reset Email
                 </button>
                 <button
@@ -308,12 +263,12 @@ function Login() {
             <div className="social-login">
               <p>Or Sign Up Using</p>
               <div className="social-icons">
-                <img
-                  src={google}
-                  alt="Google Icon"
-                  onClick={handleGoogleLogin}
-                  style={{ cursor: 'pointer' }}
-                />
+                 <img 
+                                src={google} 
+                                alt="Google Icon" 
+                                onClick={() => handleGoogleLogin(navigate, setErrorMsg, setIsLoading)} 
+                                style={{ cursor: 'pointer' }}
+                              />
                 <img src={facebook} alt="Facebook Icon" />
               </div>
             </div>

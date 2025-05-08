@@ -8,6 +8,7 @@ import facebook from "./imageFiles/facebook.png";
 import google from "./imageFiles/google.png";
 import './Signup.css'; // Import the new Signup.css
 import Navbar from './Navbar';
+import { handleGoogleLogin } from './AuthHelper/authFunctions'; // Import the Google login function
 
 function SignUp() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Add this line to track loading state
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ function SignUp() {
       setErrorMsg('Passwords do not match.');
       return;
     }
+    setIsLoading(true); // Show loading indicator
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       setErrorMsg('');
@@ -44,6 +47,8 @@ function SignUp() {
         default:
           setErrorMsg(error.message);
       }
+    } finally {
+      setIsLoading(false); // Hide loading indicator after process completes
     }
   };
 
@@ -93,7 +98,9 @@ function SignUp() {
                 required
               />
             </div>
-            <button type="submit" className="button2">Sign Up</button>
+            <button type="submit" className="button2" disabled={isLoading}>
+              {isLoading ? 'Signing Up...' : 'Sign Up'}
+            </button>
           </form>
           {errorMsg && <p className="error-message">{errorMsg}</p>}
           {successMsg && <p className="success-message">{successMsg}</p>}
@@ -103,7 +110,12 @@ function SignUp() {
           <div className="social-login">
             <p>Or Sign Up Using</p>
             <div className="social-icons">
-              <img src={google} alt="Google Icon" />
+              <img 
+                src={google} 
+                alt="Google Icon" 
+                onClick={() => handleGoogleLogin(navigate, setErrorMsg, setIsLoading)} 
+                style={{ cursor: 'pointer' }}
+              />
               <img src={facebook} alt="Facebook Icon" />
             </div>
             <footer className="footer">
