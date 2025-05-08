@@ -1,0 +1,154 @@
+/* Contact Us Section */
+.contact-us {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  color: black;
+  min-height: 100vh;
+  width: 100%;
+  margin-top: 125px; /* Push content below the fixed Navbar */
+}
+
+/* Contact Container */
+.contact-container {
+  display: flex;
+  justify-content: space-between; /* Space between left and right columns */
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 40px;
+}
+
+.contact-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1; /* Equal width for both columns */
+}
+
+/* Subheader */
+.subheader {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Contact Item */
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.contact-text {
+  font-size: 1.2rem;
+  color: black;
+}
+
+/* Location Section */
+.location-section {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.location-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hours Section */
+.hours-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hours {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+/* Footer */
+.footer {
+  margin-top: 30px;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column; /* Stack columns vertically */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .contact-column {
+    width: 100%; /* Make columns take full width */
+  }
+
+  .subheader {
+    font-size: 1.5rem; /* Reduce font size for smaller screens */
+  }
+
+  .contact-item {
+    flex-direction: column; /* Stack icon and text vertically */
+    align-items: center;
+    text-align: center;
+  }
+
+  .icon {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .contact-text {
+    font-size: 1rem;
+  }
+
+  .location-image {
+    max-width: 100%; /* Ensure the image fits within the screen */
+  }
+
+  .hours {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-us {
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
+
+  .subheader {
+    font-size: 1.2rem; /* Further reduce font size */
+  }
+
+  .contact-text {
+    font-size: 0.9rem;
+  }
+
+  .location-image {
+    border-radius: 5px; /* Reduce border radius */
+  }
+
+  .hours {
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    font-size: 0.8rem; /* Reduce footer font size */
+  }
+}

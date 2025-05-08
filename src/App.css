@@ -1,0 +1,111 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+/* Universal Background */
+.universal-background {
+  position: relative;
+  background: url('./components/imageFiles/background4.jpeg') center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: #ffffff; /* Default text color for better contrast */
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.universal-background {
+  position: relative;
+  background: url('./components/imageFiles/background1.png') center center;
+  background-size: 300px 300px; /* Set the size of the background image */
+  background-repeat: repeat; /* Make the background repeat */
+  min-height: 100vh;
+  color: #ffffff; /* Default text color for better contrast */
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: url('./components/imageFiles/background1.png') repeat center center;
+  background-size: 300px 300px; /* Set the size of the background image */
+  color: #ffffff;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .logo {
+    height: 4em;
+    padding: 1em;
+  }
+
+  .card {
+    padding: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+    padding: 0.5rem;
+  }
+
+  .logo {
+    height: 3em;
+    padding: 0.5em;
+  }
+
+  .card {
+    padding: 1em;
+  }
+
+  .read-the-docs {
+    font-size: 0.9rem;
+  }
+}

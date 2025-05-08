@@ -1,0 +1,243 @@
+/* General Styles */
+body, html {
+  background-color: rgba(244, 217, 217, 0.97) !important;
+}
+
+/* Main Content */
+.frame-4 {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 101px;
+  top: 270px;
+}
+
+.toyko-delight-ramen {
+  color: #000000;
+  text-align: center;
+  font-family: "Outfit-SemiBold", sans-serif;
+  font-size: 3rem;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  position: relative;
+}
+
+.rich-savory-and-authentic {
+  color: #000000;
+  text-align: center;
+  font-family: "OverTheRainbow-Regular", sans-serif;
+  font-size: 36px;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  position: absolute;
+  left: 155px;
+  top: 594px;
+}
+
+.frame-6 {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 187px;
+  top: 389px;
+}
+
+.experience-the-perfect-blend-of-tender-noodles-flavorful-broth-and-fresh-toppings-a-taste-of-japan-in-every-bite {
+  color: #000000;
+  text-align: left;
+  font-family: "MtExtra-Regular", sans-serif;
+  font-size: 30px;
+  line-height: 120%;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  position: relative;
+  width: 412px;
+}
+
+/* Main Content Wrapper */
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px; /* Add spacing between text and image */
+  margin: 20px auto;
+  max-width: 1200px; /* Limit the width of the content */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Text Section */
+.text-section {
+  flex: 1; /* Take up available space */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Add spacing between text elements */
+  text-align: center;
+}
+
+/* Image Section */
+.image-section {
+  flex: 1; /* Take up available space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.pexels-catscoming-1907229-1 {
+  width: 100%; /* Make the image responsive */
+  max-width: 500px; /* Limit the image size */
+  height: 100%; /* Maintain aspect ratio */
+  object-fit: fill;
+  margin-top: 150px;
+  margin-left: 30px;
+}
+
+/* Ensure the footer section doesn't overflow */
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 130px 0;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+/* Ensure the container fits properly */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  gap: 10px; /* Add spacing between footer items */
+}
+
+/* Optional: Ensure the image and text above fit within the viewport */
+.front-page-content {
+  overflow: hidden; /* Prevent extra scrollbars */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.title {
+  color: #000000;
+  text-align: center;
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+  width: 298px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title2 {
+  color: #000000;
+  text-align: center;
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+  width: 124px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title3 {
+  color: #000000;
+  text-align: center;
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+  width: 175px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column; /* Stack text and image vertically */
+    align-items: center;
+    gap: 30px;
+  }
+
+  .pexels-catscoming-1907229-1 {
+    max-width: 100%; /* Ensure the image fits within the screen */
+    margin-top: 50px;
+    margin-left: 0;
+  }
+
+  .text-section {
+    text-align: center;
+  }
+
+  .toyko-delight-ramen {
+    font-size: 2.5rem; /* Reduce font size for smaller screens */
+  }
+
+  .rich-savory-and-authentic {
+    font-size: 28px; /* Adjust font size */
+    top: auto;
+    position: relative;
+  }
+
+  .experience-the-perfect-blend-of-tender-noodles-flavorful-broth-and-fresh-toppings-a-taste-of-japan-in-every-bite {
+    font-size: 24px; /* Adjust font size */
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
+
+  .toyko-delight-ramen {
+    font-size: 2rem; /* Further reduce font size */
+  }
+
+  .rich-savory-and-authentic {
+    font-size: 24px;
+  }
+
+  .experience-the-perfect-blend-of-tender-noodles-flavorful-broth-and-fresh-toppings-a-taste-of-japan-in-every-bite {
+    font-size: 20px;
+  }
+
+  .pexels-catscoming-1907229-1 {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .title, .title2, .title3 {
+    font-size: 18px; /* Adjust font size for titles */
+  }
+}
