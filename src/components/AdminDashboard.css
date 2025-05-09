@@ -152,22 +152,19 @@
   align-items: center;
 }
 
-.menu-category .remove-section-button {
-  padding: 8px 16px;
-  background-color: #bd190e !important; /* Force the primary blue color */
-  color: #ffffff !important; /* Force white text */
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+.remove-clicker {
+  background-color: #4a3aff; 
+  color: white; 
+  border: none; 
+  padding: 10px 15px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 14px; 
+  transition: background-color 0.3s ease; 
 }
 
-.menu-category .remove-section-button:hover {
-  background-color: #372fbd !important; /* Darker blue on hover */
-  transform: scale(1.05);
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+.remove-clicker:hover {
+  background-color: #372fbd;
 }
 
 .menu-category .remove-section-button:active {
@@ -205,9 +202,16 @@
 
 .menu-item-name {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 800;
   color: #4a4a4a; /* Dark gray */
   margin-bottom: 10px;
+}
+
+.menu-item-price {
+  font-size: 1.05rem;
+  font-weight:500;
+  color: #555555; /* Gray color for price */
+  margin-bottom: 8px;
 }
 
 .remove-button {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../firebaseConfig";
-import { onAuthStateChanged, signOut, sendPasswordResetEmail } from "firebase/auth";
-import { collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import './AdminDashboard.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,7 +12,6 @@ function AdminDashboard() {
   const [selectedSection, setSelectedSection] = useState(null);
   const [newMenuItem, setNewMenuItem] = useState({ name: "", price: "", image: "" });
   const [newSectionName, setNewSectionName] = useState("");
-  const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("menu");
 
@@ -40,33 +39,46 @@ function AdminDashboard() {
       }
     });
 
-    const unsubscribeUsers = onSnapshot(collection(db, "users"), (snapshot) => {
-      const usersData = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        usersData.push({ id: doc.id, ...data });
-      });
-      setUsers(usersData);
-    });
-
-    const unsubscribeOrders = onSnapshot(collection(db, "orders"), (snapshot) => {
-      const ordersData = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        ordersData.push({ id: doc.id, ...data });
-      });
-      setOrders(ordersData);
-    });
+    const unsubscribeOrders = onSnapshot(
+      query(collection(db, "orders"), orderBy("createdAt", "desc")),
+      (snapshot) => {
+        const ordersData = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          ordersData.push({ id: doc.id, ...data });
+        });
+        setOrders(ordersData);
+      }
+    );
 
     return () => {
       unsubscribeAuth();
       unsubscribeMenu();
-      unsubscribeUsers();
       unsubscribeOrders();
     };
   }, [selectedSection]);
 
+  const validateMenuItem = () => {
+    if (!newMenuItem.name.trim()) {
+      toast.error("Name is required.", { position: "top-right", autoClose: 2000 });
+      return false;
+    }
+    if (!newMenuItem.price || isNaN(newMenuItem.price) || parseFloat(newMenuItem.price) <= 0) {
+      toast.error("Price must be a valid positive number.", { position: "top-right", autoClose: 2000 });
+      return false;
+    }
+    if (!newMenuItem.image.trim()) {
+      toast.error("Image URL is required.", { position: "top-right", autoClose: 2000 });
+      return false;
+    }
+    return true;
+  };
+
   const handleAddMenuItem = async () => {
+    if (!validateMenuItem()) {
+      return;
+    }
+
     try {
       const sectionDoc = menuItems.find((item) => item.id === selectedSection);
       if (!sectionDoc) {
@@ -94,7 +106,36 @@ function AdminDashboard() {
     }
   };
 
+  const handleRemoveMenuItem = async (index) => {
+    if (!window.confirm("Are you sure you want to remove this menu item?")) {
+      return;
+    }
+
+    try {
+      const sectionDoc = menuItems.find((item) => item.id === selectedSection);
+      if (!sectionDoc) {
+        toast.error("Section does not exist.", { position: "top-right", autoClose: 2000 });
+        return;
+      }
+
+      const updatedItems = sectionDoc.items.filter((_, i) => i !== index);
+
+      const sectionRef = doc(db, "menu", selectedSection);
+      await updateDoc(sectionRef, { items: updatedItems });
+
+      toast.success("Menu item removed successfully!", { position: "top-right", autoClose: 2000 });
+    } catch (error) {
+      console.error("Error removing menu item:", error);
+      toast.error("Failed to remove menu item. Please try again.", { position: "top-right", autoClose: 2000 });
+    }
+  };
+
   const handleAddSection = async () => {
+    if (!newSectionName.trim()) {
+      toast.error("Section name is required.", { position: "top-right", autoClose: 2000 });
+      return;
+    }
+
     try {
       const newSection = { category: newSectionName, items: [] };
       const sectionRef = doc(collection(db, "menu"));
@@ -143,7 +184,7 @@ function AdminDashboard() {
     try {
       await signOut(auth);
       toast.success("Logged out successfully!", { position: "top-right", autoClose: 2000 });
-      window.location.href = "/";
+      window.location.href = "/login";
     } catch (error) {
       console.error("Error logging out:", error);
       toast.error("Failed to log out. Please try again.", { position: "top-right", autoClose: 2000 });
@@ -163,9 +204,6 @@ function AdminDashboard() {
       <div className="top-menu">
         <button className={activeTab === "menu" ? "active-tab" : ""} onClick={() => setActiveTab("menu")}>
           Manage Menu
-        </button>
-        <button className={activeTab === "users" ? "active-tab" : ""} onClick={() => setActiveTab("users")}>
-          Manage Users
         </button>
         <button className={activeTab === "orders" ? "active-tab" : ""} onClick={() => setActiveTab("orders")}>
           Manage Orders
@@ -243,6 +281,7 @@ function AdminDashboard() {
                           className="menu-item-image"
                         />
                         <p className="menu-item-name">{food.name}</p>
+                        <p className = "menu-item-price">${food.price.toFixed(2)}</p>
                         <button className="remove-button" onClick={() => handleRemoveMenuItem(index)}>
                           Remove
                         </button>
@@ -251,37 +290,6 @@ function AdminDashboard() {
                 </div>
               </div>
             )}
-          </section>
-        )}
-
-        {activeTab === "users" && (
-          <section>
-            <h2>Manage Users</h2>
-            <table className="users-table">
-              <thead>
-                <tr>
-                  <th>Email</th>
-                  <th>Verified</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user, index) => (
-                  <tr key={index}>
-                    <td>{user.email}</td>
-                    <td>{user.verified ? "Yes" : "No"}</td>
-                    <td>
-                      <button
-                        className="reset-button"
-                        onClick={() => sendPasswordResetEmail(auth, user.email)}
-                      >
-                        Reset Password
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </section>
         )}
 

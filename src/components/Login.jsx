@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword, signOut, sendEmailVerification, sendPasswordResetEmail, signInWithPopup } from 'firebase/auth';
-import { doc, setDoc, getDoc, collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { auth, provider, db } from '../firebaseConfig';
 import userIcon from "./imageFiles/userIcon.svg";
 import lockIcon from "./imageFiles/lock.svg";
-
 import google from "./imageFiles/google.png";
 import './Login.css';
 import Navbar from './Navbar';
-import { toast, ToastContainer } from 'react-toastify';
+import {ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useAuthListener from './authHelper/useAuthListener';
+import handleLogin from './authHelper/handleLogin';
+import handleGoogleLogin from './authHelper/handleGoogleLogin';
+import handleLogout from './authHelper/handleLogout';
+import handleCompleteProfile from './authHelper/handleCompleteProfile';
+import handleVerification from './authHelper/handleVerification';
+import handleForgotPassword from './authHelper/forgotPassword';
+import profileTab from './authHelper/ProfilePage';
 
 function Login() {
   const navigate = useNavigate();
@@ -31,330 +36,70 @@ function Login() {
 
   const adminEmail = "zyuhang002@gmail.com";
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setUser(user);
+useAuthListener(setUser, setFirstName, setLastName, setPhoneNumber, setShowProfileCompletion, setOrders);
 
-        // Fetch user data from Firestore
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
+const handleLoginFunction = (e) => {
+  handleLogin(e, auth, email, password, setIsLoading, setErrorMsg, navigate, adminEmail);
+};
 
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setFirstName(userData.firstName || '');
-          setLastName(userData.lastName || '');
-          setPhoneNumber(userData.phoneNumber || '');
-        } else {
-          // If user data is missing, show profile completion form
-          setShowProfileCompletion(true);
-        }
+const handleGoogleLoginFunction = () => {
+  handleGoogleLogin(
+    auth,
+    provider,
+    db,
+    setIsLoading,
+    setShowProfileCompletion,
+    setFirstName,
+    setLastName,
+    setPhoneNumber,
+    navigate,
+    setErrorMsg
+  );
+};
 
-        // Set up a real-time listener for the user's order history
-        try {
-          const ordersRef = collection(db, 'orders');
-          const q = query(ordersRef, where('email', '==', user.email), orderBy('createdAt', 'desc'));
+const handleLogoutFunction = () => {
+  handleLogout(auth, setUser, navigate, setErrorMsg);
+};
 
-          const unsubscribeOrders = onSnapshot(q, (querySnapshot) => {
-            const fetchedOrders = querySnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setOrders(fetchedOrders);
-          });
+const CompleteProfile = (e) => {
+  handleCompleteProfile(
+    e,
+    user,
+    db,
+    firstName,
+    lastName,
+    phoneNumber,
+    setIsLoading,
+    setShowProfileCompletion,
+    navigate,
+    setErrorMsg
+  );
+};
 
-          // Cleanup the listener when the component unmounts
-          return () => unsubscribeOrders();
-        } catch (error) {
-          console.error('Error setting up real-time listener for orders:', error);
-        }
-      } else {
-        setUser(null);
-        setOrders([]); // Clear orders when user logs out
-      }
-    });
+const Verification = async () => {
+  await handleVerification(user, setIsLoading);
+};
 
-    // Cleanup the auth listener when the component unmounts
-    return () => unsubscribe();
-  }, []);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+const forgotPassword = async () => {
+  await handleForgotPassword(auth, resetEmail, setIsLoading, setShowForgotPassword);
+};
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      if (user.email === adminEmail) {
-        navigate('/admin');
-      } else if (user.emailVerified) {
-        setErrorMsg('');
-        navigate('/menu');
-      } else {
-        setErrorMsg('Please verify your email before accessing the menu.');
-        navigate('/login');
-      }
-    } catch (error) {
-      switch (error.code) {
-        case 'auth/user-not-found':
-          setErrorMsg('No user found with this email.');
-          break;
-        case 'auth/wrong-password':
-          setErrorMsg('Incorrect password.');
-          break;
-        case 'auth/invalid-email':
-          setErrorMsg('Invalid email format.');
-          break;
-        default:
-          setErrorMsg(error.message);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      setIsLoading(true);
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Check if the user already exists in Firestore
-      const userDocRef = doc(db, 'users', user.uid);
-      const userDoc = await getDoc(userDocRef);
-
-      if (!userDoc.exists()) {
-        // If the user is new, save their basic info to Firestore
-        await setDoc(userDocRef, {
-          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
-          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
-          email: user.email,
-          phoneNumber: '', // Leave phone number blank for now
-        });
-
-        // Show profile completion form
-        setShowProfileCompletion(true);
-      } else {
-        // If the user already exists, fetch their data
-        const userData = userDoc.data();
-        setFirstName(userData.firstName || '');
-        setLastName(userData.lastName || '');
-        setPhoneNumber(userData.phoneNumber || '');
-        navigate('/menu');
-      }
-
-      setErrorMsg('');
-    } catch (error) {
-      console.error('Google login error:', error);
-      setErrorMsg('Google sign-in failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth); // Sign out the user
-      setUser(null); // Clear the user state
-      navigate('/login'); // Redirect to the login page
-    } catch (error) {
-      console.error('Error logging out:', error);
-      setErrorMsg('Failed to log out. Please try again.');
-    }
-  };
-
-  const handleCompleteProfile = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const userDocRef = doc(db, 'users', user.uid);
-
-      // Save the completed profile data to Firestore
-      await setDoc(
-        userDocRef,
-        {
-          firstName,
-          lastName,
-          phoneNumber,
-          email: user.email,
-        },
-        { merge: true } // Merge to avoid overwriting existing data
-      );
-
-      setShowProfileCompletion(false);
-      navigate('/menu'); // Redirect to the menu after completion
-    } catch (error) {
-      console.error('Error completing profile:', error);
-      setErrorMsg('Failed to complete profile. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleResendVerification = async () => {
-    try {
-      setIsLoading(true);
-      if (user) {
-        await sendEmailVerification(user); // Send verification email using Firebase
-        toast.success('Verification email sent. Please check your inbox.');
-      } else {
-        toast.error('No user is logged in.');
-      }
-    } catch (error) {
-      console.error('Error sending verification email:', error);
-      toast.error('Failed to send verification email. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleForgotPassword = async () => {
-    if (!resetEmail) {
-      toast.error("Please enter an email to reset password.");
-      return;
-    }
-    try {
-      setIsLoading(true);
-      await sendPasswordResetEmail(auth, resetEmail);
-      toast.success("Password reset email sent. Please check your inbox.");
-      setShowForgotPassword(false);
-    } catch (error) {
-      console.error("Password reset error:", error);
-      toast.error("Failed to send reset email. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'accountInfo':
-        return (
-          <div className="account-info">
-            <h3>Account Information</h3>
-            <div className="account-info-cards">
-              <div className="info-card">
-                <h4>First Name</h4>
-                <p>{firstName || 'N/A'}</p>
-              </div>
-              <div className="info-card">
-                <h4>Last Name</h4>
-                <p>{lastName || 'N/A'}</p>
-              </div>
-              <div className="info-card">
-                <h4>Phone Number</h4>
-                <p>{phoneNumber || 'N/A'}</p>
-              </div>
-              <div className="info-card">
-                <h4>Email</h4>
-                <p>{user?.email || 'N/A'}</p>
-              </div>
-            </div>
-          </div>
-        );
-      case 'orderHistory':
-        return (
-          <div>
-            <h3>Order History</h3>
-            {orders.length === 0 ? (
-              <p>You have no past orders.</p>
-            ) : (
-              <div className="order-history">
-                {orders.map((order, index) => (
-                  <div key={order.id} className="order-card">
-                    <div className="order-section">
-                      <button
-                        className="order-section-header"
-                        onClick={() =>
-                          setExpandedSection(
-                            expandedSection === `order-${index}-id` ? null : `order-${index}-id`
-                          )
-                        }
-                      >
-                        <p>
-                          <strong>Order #:</strong> {order.id}
-                        </p>
-                        <p>
-                          <strong>Date:</strong> {order.createdAt?.toDate().toLocaleString()}
-                        </p>
-                      </button>
-                      {expandedSection === `order-${index}-id` && (
-                        <div className="order-section-content">
-                          <p>
-                            <strong>Status:</strong> {order.status || "Pending"}
-                          </p>
-                          <p>
-                            <strong>Total:</strong> ${order.total.toFixed(2)}
-                          </p>
-                          <p>
-                            <strong>Special Instructions:</strong>{" "}
-                            {order.specialInstructions || "None"}
-                          </p>
-                          <p>
-                            <strong>Items:</strong>
-                          </p>
-                          <ul>
-                            {order.items.map((item, idx) => (
-                              <li key={idx}>
-                                {item.quantity}x {item.name} - ${item.price.toFixed(2)}
-                              </li>
-                            ))}
-                          </ul>
-                          <button
-                            onClick={() => navigate(`/order-tracking/${order.id}`)}
-                            className="track-order-btn"
-                            disabled={order.status === "Complete"}
-                          >
-                            {order.status === "Complete" ? "Order Completed" : "Track Order"}
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-      case 'payment':
-        return (
-          <div>
-            <h3>Payment</h3>
-            <p>Payment methods will be displayed here.</p>
-          </div>
-        );
-      case 'verification':
-        return (
-          <div>
-            <h3>Email Verification</h3>
-            {user ? (
-              user.emailVerified ? (
-                <p>Your email is verified. Thank you!</p>
-              ) : (
-                <>
-                  <p>Your email is not verified. Please verify your email to access all features.</p>
-                  <button
-                    onClick={handleResendVerification}
-                    className="button2"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? 'Sending...' : 'Resend Verification Email'}
-                  </button>
-                </>
-              )
-            ) : (
-              <p>Loading user information...</p>
-            )}
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
+const LoadprofileTab = () => {
+  return profileTab(
+    activeTab,
+    firstName,
+    lastName,
+    phoneNumber,
+    user,
+    orders,
+    expandedSection,
+    setExpandedSection,
+    navigate,
+    Verification,
+    isLoading
+  );
+};
   return (
     <>
       <Navbar />
@@ -363,7 +108,7 @@ function Login() {
         {showProfileCompletion ? (
           <div className="profile-completion">
             <h2>Complete Your Profile</h2>
-            <form onSubmit={handleCompleteProfile} className="complete-profile-form">
+            <form onSubmit={CompleteProfile} className="complete-profile-form">
               <div className="input-group">
                 <label htmlFor="firstName" className="label">First Name:</label>
                 <input
@@ -433,18 +178,18 @@ function Login() {
                 Verification
               </button>
               <button
-                onClick={handleLogout}
+                onClick={handleLogoutFunction}
                 className="logout"
               >
                 Logout
               </button>
             </div>
-            <div className="tab-content">{renderTabContent()}</div>
+            <div className="tab-content">{LoadprofileTab()}</div>
           </div>
         ) : (
           <div className="login-container">
             <h2 className="login-title">Login</h2>
-            <form onSubmit={handleLogin} className="login-form">
+            <form onSubmit={handleLoginFunction} className="login-form">
               <div className="input-group">
                 <img src={userIcon} alt="User Icon" className="icon" />
                 <label htmlFor="email" className="label">Email:</label>
@@ -494,7 +239,7 @@ function Login() {
                   onChange={(e) => setResetEmail(e.target.value)}
                   className="input-field"
                 />
-                <button onClick={handleForgotPassword} className="button2">
+                <button onClick={forgotPassword} className="button2">
                   Send Reset Email
                 </button>
                 <button
@@ -515,7 +260,7 @@ function Login() {
                 <img
                   src={google}
                   alt="Google Icon"
-                  onClick={handleGoogleLogin}
+                  onClick={handleGoogleLoginFunction}
                   style={{ cursor: 'pointer' }}
                 />
 

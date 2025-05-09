@@ -12,7 +12,7 @@ function Menu() {
   const [categories, setCategories] = useState({});
   const [selectedCategory, setSelectedCategory] = useState(null);
   const { addToCart } = useContext(CartContext);
-
+  
   useEffect(() => {
     const fetchMenu = async () => {
       try {

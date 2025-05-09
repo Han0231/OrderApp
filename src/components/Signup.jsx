@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../firebaseConfig'; // Ensure Firestore is configured
+import { auth,provider, db } from '../firebaseConfig'; // Ensure Firestore is configured
 import userIcon from "./imageFiles/userIcon.svg";
 import lockIcon from "./imageFiles/lock.svg";
 import google from "./imageFiles/google.png";
 import './Signup.css';
 import Navbar from './Navbar';
-import {handleGoogleLogin} from './AuthHelper/authFunctions'; // Import Google login function
+import handleGoogleLogin from './authHelper/handleGoogleLogin';
+
 
 function SignUp() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function SignUp() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showProfileCompletion, setShowProfileCompletion] = useState(false);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -63,6 +65,20 @@ function SignUp() {
     }
   };
 
+  const handleGoogleLoginFunction = () => {
+    handleGoogleLogin(
+      auth,
+      provider,
+      db,
+      setIsLoading,
+      setShowProfileCompletion,
+      setFirstName,
+      setLastName,
+      setPhoneNumber,
+      navigate,
+      setErrorMsg
+    );
+  };
   return (
     <>
       <Navbar />
@@ -158,7 +174,7 @@ function SignUp() {
             <img 
                 src={google} 
                 alt="Google Icon" 
-                onClick={() => handleGoogleLogin(navigate, setErrorMsg, setIsLoading)} 
+                onClick={handleGoogleLoginFunction}
                 style={{ cursor: 'pointer' }}
               />
            
